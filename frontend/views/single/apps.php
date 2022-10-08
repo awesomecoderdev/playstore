@@ -34,10 +34,20 @@ $awesomecoder_app_sizes = get_post_meta(get_the_ID(), "awesomecoder_app_sizes", 
     <div class="awesomecoder py-2 font-poppins">
         <?php
         $app_ver = $_REQUEST["download"];
-        $file =  isset($awesomecoder_app_upload[$app_ver]) ? $awesomecoder_app_upload[$app_ver] : (isset($awesomecoder_app_upload[0]) ? $awesomecoder_app_upload[0] : "");
+        $file = false;
+        $app_prod = [];
+        foreach ($awesomecoder_app_upload as $key => $app) {
+            if ($app_ver == $app["version"]) {
+                $file = $app["file"];
+                $app_prod = $app;
+                break;
+            }
+        }
+        // $file =  isset($awesomecoder_app_upload[$app_ver]) ? $awesomecoder_app_upload[$app_ver] : (isset($awesomecoder_app_upload[0]) ? $awesomecoder_app_upload[0] : "");
         $token = $file ? base64_encode($file) : false;
         $download = site_url("download/?token=$token");
         $path = ABSPATH . "download/$file";
+
         ?>
         <?php if (file_exists($path) && is_readable($path)) : ?>
             <a href="javascript:void(0);" id="awesomecoder_download" data-url="<?php echo $token ? $download : "javascript:void(0)";  ?>" class="cursor-pointer relative shadow-sm rounded-md w-full flex justify-center items-center py-2 bg-primary-400 text-white focus:text-white active:text-white hover:text-white opacity-50 transition-all duration-150 opacity-100 ">
@@ -47,8 +57,8 @@ $awesomecoder_app_sizes = get_post_meta(get_the_ID(), "awesomecoder_app_sizes", 
                 <span class="showDownload text-sm font-semibold transition-all duration-150 text-white hover:text-white focus:text-white">
                     <?php _e("Download", "awesomecoder"); ?>
                     <?php
-                    if (isset($awesomecoder_app_sizes[$app_ver])) {
-                        $size = $awesomecoder_app_sizes[$app_ver];
+                    if (isset($app_prod["size"])) {
+                        $size = $app_prod["size"];
                         echo "(V $app_ver)";
                     }
                     ?>
@@ -59,9 +69,9 @@ $awesomecoder_app_sizes = get_post_meta(get_the_ID(), "awesomecoder_app_sizes", 
                 <span class="showDownloadNow hidden text-sm font-semibold transition-all duration-150 text-white hover:text-white focus:text-white">
                     <?php _e("Download Now", "awesomecoder"); ?>
                     <?php
-                    if (isset($awesomecoder_app_sizes[$app_ver])) {
-                        $size = $awesomecoder_app_sizes[$app_ver];
-                        echo "(V $app_ver - $size)";
+                    if (isset($app_prod["size"])) {
+                        $size = $app_prod["size"];
+                        echo "(V $app_ver)";
                     }
                     ?>
                 </span>
@@ -85,32 +95,31 @@ $awesomecoder_app_sizes = get_post_meta(get_the_ID(), "awesomecoder_app_sizes", 
                 const awesomecoder_download_timer_text = document.getElementById("awesomecoder_download_timer_text");
                 var awesomecoder_download_timer = 10;
                 awesomecoder_download.addEventListener("click", function() {
-                    showDownload.forEach(e => {
-                        e.classList.add("hidden");
-                    });
-                    showDownloadTimer.forEach(e => {
-                        e.classList.remove("hidden");
-                    });
-                    const downloadTimer = setInterval(() => {
-                        awesomecoder_download_timer--;
-                        if (awesomecoder_download_timer == 0) {
-                            showDownloadNow.forEach(e => {
-                                e.classList.remove("hidden");
-                            });
-                            showDownloadTimer.forEach(e => {
-                                e.classList.add("hidden");
-                            });
-                            awesomecoder_download.setAttribute("href", awesomecoder_download_url);
-                            clearInterval(downloadTimer)
-                        } else {
-                            awesomecoder_download_timer_text.innerText = awesomecoder_download_timer;
-                        }
-                    }, 1000);
+                    const url = awesomecoder_download.getAttribute("href");
+                    if (url == "javascript:void(0);") {
+                        showDownload.forEach(e => {
+                            e.classList.add("hidden");
+                        });
+                        showDownloadTimer.forEach(e => {
+                            e.classList.remove("hidden");
+                        });
+                        const downloadTimer = setInterval(() => {
+                            awesomecoder_download_timer--;
+                            if (awesomecoder_download_timer < 1) {
+                                showDownloadNow.forEach(e => {
+                                    e.classList.remove("hidden");
+                                });
+                                showDownloadTimer.forEach(e => {
+                                    e.classList.add("hidden");
+                                });
+                                awesomecoder_download.setAttribute("href", awesomecoder_download_url);
+                                clearInterval(downloadTimer)
+                            } else {
+                                awesomecoder_download_timer_text.innerText = awesomecoder_download_timer;
+                            }
+                        }, 1000);
+                    }
                 })
-                // setTimeout(() => {
-                //     awesomecoder_download.setAttribute("href", awesomecoder_download_url);
-                //     awesomecoder_download.classList.remove("opacity-50");
-                // }, 10000);
             </script>
         <?php endif; ?>
     </div>
@@ -246,7 +255,12 @@ $awesomecoder_app_sizes = get_post_meta(get_the_ID(), "awesomecoder_app_sizes", 
     </div>
 
     <div class="awesomecoder py-2 font-poppins">
-        <?php foreach ($awesomecoder_app_upload as $version => $app) : ?>
+        <?php foreach ($awesomecoder_app_upload as $key => $app) : ?>
+            <?php
+            $version = $app["version"];
+            $size = $app["size"];
+
+            ?>
             <a href="<?php echo  get_the_permalink() . "?download=$version" ?>" class="my-3 cursor-pointer relative shadow-sm rounded-md w-full flex justify-center items-center py-2 bg-primary-400 text-white focus:text-white active:text-white hover:text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-2 transition-all duration-150 text-white hover:text-white focus:text-white" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -254,9 +268,8 @@ $awesomecoder_app_sizes = get_post_meta(get_the_ID(), "awesomecoder_app_sizes", 
                 <span class="text-sm font-semibold transition-all duration-150 text-white hover:text-white focus:text-white">
                     <?php _e("Download now", "awesomecoder"); ?>
                     <?php
-                    if (isset($awesomecoder_app_sizes[$version])) {
-                        $size = $awesomecoder_app_sizes[$version];
-                        echo "(" . get_the_title() . " V$version - $size " . ")";
+                    if (isset($version)) {
+                        echo "(" . get_the_title() . " V $version - $size " . ")";
                     }
                     ?>
                 </span>
