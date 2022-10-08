@@ -187,6 +187,7 @@ class Awesomecoder_Backend
 			"ajaxurl"	=> admin_url("admin-ajax.php?action=awesomecoder_backend"),
 			"http"	=> AWESOMECODER,
 			"auth" => AWESOMECODER_AUTH,
+			"modified_date" =>	get_the_modified_date(get_option('date_format')),
 			"metabox" => [
 				"fields" => [
 					[
@@ -238,10 +239,11 @@ class Awesomecoder_Backend
 						"type" => "text",
 					],
 					[
-						"label" => __("Size", "awesomecoder"),
+						"label" => __("Last Version Size", "awesomecoder"),
 						"placeholder" => __("Size", "awesomecoder"),
 						"name" => "awesomecoder_app_size",
 						"type" => "text",
+						"disabled" => true,
 					],
 					[
 						"label" => __("Compatible With", "awesomecoder"),
@@ -272,7 +274,7 @@ class Awesomecoder_Backend
 					"awesomecoder_app_upload" => get_post_meta(get_the_ID(), "awesomecoder_app_upload", true),
 					"post_id" => get_the_ID(),
 				]
-			]
+			],
 		));
 
 		// if (in_array($hook, $this->pages)) {

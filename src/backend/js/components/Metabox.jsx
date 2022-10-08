@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ajaxurl, awesomecoder, metaFields,states } from './Backend';
+import { ajaxurl, awesomecoder, metaFields,modified_date,states } from './Backend';
 import { RefreshIcon } from '@heroicons/react/outline';
 import axios from 'axios';
 import { bind } from 'lodash';
@@ -101,14 +101,26 @@ class Metabox extends Component {
                                     <input onChange={event => this.handleChange( field?.name, event)}
                                     placeholder={field?.placeholder}
                                     value={this.state[field?.name]}
+                                    disabled={field?.disabled}
                                     type={ field?.type}
                                     name={field?.name}
                                     className="block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md " />
                                 </div>
                             </div>
-
                         )
                     })}
+                    <div className="full relative my-1">
+                        <div className="relative rounded-md ">
+                            <p className="mb-1 italic text-slate-800 text-xs font-light">
+                                Updated
+                            </p>
+                            <input
+                            type={"text"}
+                            disabled
+                            value={modified_date}
+                            className="block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md " />
+                        </div>
+                    </div>
                 </div>
             </>
         );

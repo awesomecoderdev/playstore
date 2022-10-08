@@ -2560,17 +2560,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "metaFields": () => (/* binding */ metaFields),
 /* harmony export */   "metabox": () => (/* binding */ metabox),
+/* harmony export */   "modified_date": () => (/* binding */ modified_date),
 /* harmony export */   "states": () => (/* binding */ states)
 /* harmony export */ });
 var ajaxurl = awesomecoder.ajaxurl;
 var metabox = awesomecoder.metabox;
+var modified_date = awesomecoder.modified_date;
 var metaFields = metabox.fields;
 var states = metabox.states;
+console.log('====================================');
+console.log(modified_date);
+console.log('====================================');
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   awesomecoder: awesomecoder,
   ajaxurl: ajaxurl,
   metabox: metabox,
   metaFields: metaFields,
+  modified_date: modified_date,
   states: states
 });
 
@@ -2741,9 +2747,9 @@ var Metabox = /*#__PURE__*/function (_Component) {
               className: (_this$state2 = this.state) !== null && _this$state2 !== void 0 && _this$state2.refresh ? "animate-spin pointer-events-none h-6 w-6 text-white font-semibold text-sm" : "pointer-events-none h-6 w-6 text-white font-semibold text-sm"
             })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "grid lg:grid-cols-3 md:grid-cols-2 ",
-          children: _Backend__WEBPACK_IMPORTED_MODULE_1__.metaFields.map(function (field, i) {
+          children: [_Backend__WEBPACK_IMPORTED_MODULE_1__.metaFields.map(function (field, i) {
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
               className: "full relative my-1",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
@@ -2757,13 +2763,28 @@ var Metabox = /*#__PURE__*/function (_Component) {
                   },
                   placeholder: field === null || field === void 0 ? void 0 : field.placeholder,
                   value: _this2.state[field === null || field === void 0 ? void 0 : field.name],
+                  disabled: field === null || field === void 0 ? void 0 : field.disabled,
                   type: field === null || field === void 0 ? void 0 : field.type,
                   name: field === null || field === void 0 ? void 0 : field.name,
                   className: "block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
                 })]
               })
             }, field === null || field === void 0 ? void 0 : field.name);
-          })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            className: "full relative my-1",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              className: "relative rounded-md ",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+                className: "mb-1 italic text-slate-800 text-xs font-light",
+                children: "Updated"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                type: "text",
+                disabled: true,
+                value: _Backend__WEBPACK_IMPORTED_MODULE_1__.modified_date,
+                className: "block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
+              })]
+            })
+          })]
         })]
       });
     }
