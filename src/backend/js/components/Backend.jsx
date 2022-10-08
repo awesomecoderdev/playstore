@@ -5,6 +5,8 @@ export const metaFields = metabox.fields;
 export const states = metabox.states;
 export const uploads = awesomecoder.uploads;
 export const post_id = awesomecoder.post_id;
+export const licence_key = awesomecoder.licence_key ? awesomecoder.licence_key : "";
+
 export const headers = {
     headers: {
         'X-Requested-With': 'XMLHttpRequest',
@@ -20,5 +22,6 @@ export default {
     modified_date,
     states,
     uploads,
-    headers
+    headers,
+    licence_key
 }

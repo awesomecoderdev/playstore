@@ -296,7 +296,8 @@ class Awesomecoder_Backend
 				]
 			],
 			"uploads" => $app_upload,
-			"post_id" => get_the_ID()
+			"post_id" => get_the_ID(),
+			"licence_key" => get_option("awesomecoder_licence_key", "")
 		));
 
 		// if (in_array($hook, $this->pages)) {

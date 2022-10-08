@@ -84,7 +84,13 @@ class Awesomecoder_MetaBox
                 $app_upload[$key] = [
                     "file" => $names[$key],
                     "size" => $sizes[$key],
-                    "version" => $versions[$key],
+                    "version" => str_replace([
+                        '[', '`', '!', '@',  '#', '$', '%',
+                        '^', '&', '*', '(',  ')', '_', '+',
+                        '-', '=', '[', ']',  '{', '}', ';',
+                        "'", ':', '"', '\\', '|', ',', ' ',
+                        '<', '>', '/', '?',  '~', ']', '/',
+                    ], "", $versions[$key]),
                 ];
             }
             $app_upload = array_values($app_upload);

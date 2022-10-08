@@ -612,7 +612,7 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
     }
 .awesomecoder input[type=number], 
    .awesomecoder input[type=text]{
-  width: 18rem;
+  width: 15rem;
   border-radius: 0.375rem;
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
@@ -623,10 +623,16 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
-@media (min-width: 640px){
+@media (min-width: 320px){
   .awesomecoder input[type=number], 
    .awesomecoder input[type=text]{
-    width: 18rem;
+    width: 100%;
+  }
+}
+@media (min-width: 768px){
+  .awesomecoder input[type=number], 
+   .awesomecoder input[type=text]{
+    width: 20rem;
   }
 }
 @media (min-width: 1024px){
@@ -643,6 +649,20 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
   border-bottom-right-radius: 0px;
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+#activate{
+  height: 2.25rem;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+        box-shadow: none !important;
+}
+#activate.currentNotice{
+  --tw-border-opacity: 1;
+  border-color: rgb(220 38 38 / var(--tw-border-opacity));
+}
+#activate.currentValidNotice{
+  --tw-border-opacity: 1;
+  border-color: rgb(71 85 105 / var(--tw-border-opacity));
 }
 .awesomecoder input[type=text].awesomecoder_app_url:focus {
         outline: none !important;
@@ -725,6 +745,12 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .mr-2{
   margin-right: 0.5rem;
 }
+.-ml-1{
+  margin-left: -0.25rem;
+}
+.mr-3{
+  margin-right: 0.75rem;
+}
 .mb-1{
   margin-bottom: 0.25rem;
 }
@@ -733,6 +759,9 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 }
 .flex{
   display: flex;
+}
+.inline-flex{
+  display: inline-flex;
 }
 .table{
   display: table;
@@ -763,6 +792,12 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 }
 .h-\[90px\]{
   height: 90px;
+}
+.h-32{
+  height: 8rem;
+}
+.h-8{
+  height: 2rem;
 }
 .h-6{
   height: 1.5rem;
@@ -796,6 +831,9 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .w-\[130px\]{
   width: 130px;
 }
+.w-8{
+  width: 2rem;
+}
 .w-screen{
   width: 100vw;
 }
@@ -820,6 +858,12 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .max-w-lg{
   max-width: 32rem;
 }
+.max-w-7xl{
+  max-width: 80rem;
+}
+.max-w-xs{
+  max-width: 20rem;
+}
 .transform{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
@@ -837,14 +881,31 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
   -webkit-animation: spin 1s linear infinite;
           animation: spin 1s linear infinite;
 }
+@-webkit-keyframes pulse{
+  50%{
+    opacity: .5;
+  }
+}
+@keyframes pulse{
+  50%{
+    opacity: .5;
+  }
+}
+.animate-pulse{
+  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 .cursor-pointer{
   cursor: pointer;
 }
+.cursor-not-allowed{
+  cursor: not-allowed;
+}
+.flex-col{
+  flex-direction: column;
+}
 .items-center{
   align-items: center;
-}
-.justify-end{
-  justify-content: flex-end;
 }
 .justify-center{
   justify-content: center;
@@ -867,6 +928,11 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
   --tw-space-x-reverse: 0;
   margin-right: calc(0.25rem * var(--tw-space-x-reverse));
   margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
 }
 .space-y-3 > :not([hidden]) ~ :not([hidden]){
   --tw-space-y-reverse: 0;
@@ -905,6 +971,10 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .rounded-lg{
   border-radius: 0.5rem;
 }
+.rounded-r-none{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
 .rounded-r-md{
   border-top-right-radius: 0.375rem;
   border-bottom-right-radius: 0.375rem;
@@ -920,6 +990,9 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 }
 .border-none{
   border-style: none;
+}
+.border-slate-300\/50{
+  border-color: rgb(203 213 225 / 0.5);
 }
 .border-gray-300\/10{
   border-color: rgb(209 213 219 / 0.1);
@@ -945,6 +1018,10 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .bg-black{
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
+.bg-primary-300{
+  --tw-bg-opacity: 1;
+  background-color: rgb(125 211 252 / var(--tw-bg-opacity));
 }
 .bg-contain{
   background-size: contain;
@@ -1030,6 +1107,9 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .italic{
   font-style: italic;
 }
+.leading-6{
+  line-height: 1.5rem;
+}
 .text-slate-600{
   --tw-text-opacity: 1;
   color: rgb(71 85 105 / var(--tw-text-opacity));
@@ -1062,6 +1142,10 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
   --tw-text-opacity: 1;
   color: rgb(56 189 248 / var(--tw-text-opacity));
 }
+.text-red-500{
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
+}
 .text-slate-800{
   --tw-text-opacity: 1;
   color: rgb(30 41 59 / var(--tw-text-opacity));
@@ -1076,14 +1160,14 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .opacity-100{
   opacity: 1;
 }
-.opacity-0{
-  opacity: 0;
+.opacity-25{
+  opacity: 0.25;
 }
 .opacity-75{
   opacity: 0.75;
 }
-.opacity-60{
-  opacity: 0.6;
+.opacity-0{
+  opacity: 0;
 }
 .mix-blend-overlay{
   mix-blend-mode: overlay;
@@ -1103,6 +1187,11 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
+.shadow-xl{
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
 .filter{
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
@@ -1120,6 +1209,9 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 }
 .duration-150{
   transition-duration: 150ms;
+}
+.duration-200{
+  transition-duration: 200ms;
 }
 .ease-in-out{
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1146,6 +1238,10 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 }
 .hover\:bg-slate-100\/50:hover{
   background-color: rgb(241 245 249 / 0.5);
+}
+.hover\:bg-primary-300:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(125 211 252 / var(--tw-bg-opacity));
 }
 .hover\:text-white:hover{
   --tw-text-opacity: 1;
@@ -1214,8 +1310,15 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
   }
 }
 @media (min-width: 768px){
+  .md\:mx-auto{
+    margin-left: auto;
+    margin-right: auto;
+  }
   .md\:block{
     display: block;
+  }
+  .md\:h-40{
+    height: 10rem;
   }
   .md\:grid-cols-2{
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1230,12 +1333,21 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
   }
 }
 @media (min-width: 1024px){
+  .lg\:mx-0{
+    margin-left: 0px;
+    margin-right: 0px;
+  }
   .lg\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .lg\:px-32{
     padding-left: 8rem;
     padding-right: 8rem;
+  }
+}
+@media (min-width: 1536px){
+  .\32xl\:grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

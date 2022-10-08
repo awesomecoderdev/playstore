@@ -35,5 +35,6 @@ class Awesomecoder_Deactivator
 	 */
 	public static function deactivate()
 	{
+		update_option("awesomecoder_setup_wizard", true);
 	}
 }

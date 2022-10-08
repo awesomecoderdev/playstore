@@ -290,6 +290,16 @@ class Awesomecoder_Handler
 			wp_die();
 		}
 
+		if (isset($_REQUEST["awesomecoder_action"], $_REQUEST["key"]) && $_REQUEST["awesomecoder_action"] == "lic") {
+			$key = $_REQUEST["key"];
+			update_option("awesomecoder_licence_key", $key);
+			echo json_encode([
+				"success" => true,
+				"key" => $key
+			]);
+			die;
+		}
+
 		echo json_encode([
 			"success" => false,
 			"message" => "Unauthorize Access!"

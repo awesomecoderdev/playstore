@@ -2559,6 +2559,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ajaxurl": () => (/* binding */ ajaxurl),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "headers": () => (/* binding */ headers),
+/* harmony export */   "licence_key": () => (/* binding */ licence_key),
 /* harmony export */   "metaFields": () => (/* binding */ metaFields),
 /* harmony export */   "metabox": () => (/* binding */ metabox),
 /* harmony export */   "modified_date": () => (/* binding */ modified_date),
@@ -2573,6 +2574,7 @@ var metaFields = metabox.fields;
 var states = metabox.states;
 var uploads = awesomecoder.uploads;
 var post_id = awesomecoder.post_id;
+var licence_key = awesomecoder.licence_key ? awesomecoder.licence_key : "";
 var headers = {
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
@@ -2588,7 +2590,8 @@ var headers = {
   modified_date: modified_date,
   states: states,
   uploads: uploads,
-  headers: headers
+  headers: headers,
+  licence_key: licence_key
 });
 
 /***/ }),
@@ -2607,10 +2610,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Backend__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Backend */ "./src/backend/js/components/Backend.jsx");
-/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/RefreshIcon.js");
-/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/FolderAddIcon.js");
-/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/BackspaceIcon.js");
-/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/FolderDownloadIcon.js");
+/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/ExclamationCircleIcon.js");
+/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/RefreshIcon.js");
+/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/FolderAddIcon.js");
+/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/BackspaceIcon.js");
+/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/FolderDownloadIcon.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
@@ -2648,7 +2652,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
 var Metabox = /*#__PURE__*/function (_Component) {
   _inherits(Metabox, _Component);
 
@@ -2660,6 +2663,10 @@ var Metabox = /*#__PURE__*/function (_Component) {
     _classCallCheck(this, Metabox);
 
     _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "componentDidMount", function () {
+      _this.handleCheckLicence();
+    });
 
     _defineProperty(_assertThisInitialized(_this), "handleFeatchData", function () {
       var _self$state;
@@ -2795,6 +2802,55 @@ var Metabox = /*#__PURE__*/function (_Component) {
       }
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleActivateLicence", function (e) {
+      var self = _assertThisInitialized(_this);
+
+      var lic = _this.activateRef.current.value;
+      self.setState({
+        activating: true
+      });
+      axios__WEBPACK_IMPORTED_MODULE_2___default().post("".concat(_Backend__WEBPACK_IMPORTED_MODULE_1__.ajaxurl, "&awesomecoder_action=lic"), {
+        key: lic
+      }, _Backend__WEBPACK_IMPORTED_MODULE_1__.headers).then(function (res) {
+        if (res.data.success) {
+          self.setState({
+            key: res.data.key,
+            notice: false
+          });
+          self.handleCheckLicence();
+        } else {
+          self.setState({
+            fallBack: true,
+            key: "Please use a valid licence key.",
+            notice: true
+          });
+        }
+
+        self.setState({
+          activating: false
+        });
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleCheckLicence", function (e) {
+      var self = _assertThisInitialized(_this);
+
+      axios__WEBPACK_IMPORTED_MODULE_2___default().get("https://localhost/wordpress/wp-json/awesomecoder/v1/verify/?key=".concat(self.state.key)).then(function (res) {
+        if (res.data.success) {
+          self.setState({
+            fallBack: false,
+            notice: false
+          });
+        } else {
+          self.setState({
+            fallBack: true,
+            notice: true,
+            key: "Please use a valid licence key."
+          });
+        }
+      });
+    });
+
     _this.state = {
       refresh: false,
       featch: "",
@@ -2810,9 +2866,14 @@ var Metabox = /*#__PURE__*/function (_Component) {
       awesomecoder_app_link: _Backend__WEBPACK_IMPORTED_MODULE_1__.states === null || _Backend__WEBPACK_IMPORTED_MODULE_1__.states === void 0 ? void 0 : _Backend__WEBPACK_IMPORTED_MODULE_1__.states.awesomecoder_app_link,
       awesomecoder_app_price: _Backend__WEBPACK_IMPORTED_MODULE_1__.states === null || _Backend__WEBPACK_IMPORTED_MODULE_1__.states === void 0 ? void 0 : _Backend__WEBPACK_IMPORTED_MODULE_1__.states.awesomecoder_app_price,
       uploads: _Backend__WEBPACK_IMPORTED_MODULE_1__.uploads,
-      currentFile: null
+      currentFile: null,
+      fallBack: false,
+      activating: false,
+      key: _Backend__WEBPACK_IMPORTED_MODULE_1__.licence_key,
+      notice: false
     };
     _this.uploadFileRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createRef();
+    _this.activateRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createRef();
     _this.handleFeatchData = _this.handleFeatchData.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     return _this;
@@ -2825,172 +2886,241 @@ var Metabox = /*#__PURE__*/function (_Component) {
           _this$state,
           _this$state2;
 
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-          className: "full flex relative my-1 justify-between",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
-            onChange: function onChange(event) {
-              return _this2.handleChange("featch", event);
-            },
-            value: (_this$state = this.state) === null || _this$state === void 0 ? void 0 : _this$state.featch,
-            placeholder: "PlayStore App Url",
-            type: "text",
-            className: "awesomecoder_app_url block w-screen p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300/0 focus:ring focus:ring-primary-200/0 focus:ring-opacity-50"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
-            onClick: this.handleFeatchData,
-            className: "bg-primary-400 flex justify-around items-center w-1/5 cursor-pointer rounded-r-md",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-              className: "md:block hidden text-white font-semibold text-sm pointer-events-none ",
-              children: "Featch Data"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_5__["default"], {
-              className: (_this$state2 = this.state) !== null && _this$state2 !== void 0 && _this$state2.refresh ? "animate-spin pointer-events-none h-6 w-6 text-white font-semibold text-sm" : "pointer-events-none h-6 w-6 text-white font-semibold text-sm"
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        className: "relative max-w-7xl mx-auto",
+        children: this.state.fallBack ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            className: "w-full flex justify-center items-center md:h-40 h-32 rounded-md shadow-md border border-slate-300/50",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              className: "relative flex justify-center flex-col space-y-2",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
+                className: "animate-pulse mx-auto text-sm font-semibold flex items-center",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_5__["default"], {
+                  className: "mr-2 h-8 w-8 text-red-500"
+                }), " Don't have access."]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                className: "relative flex justify-center",
+                children: this.state.activating ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                  type: "button",
+                  className: "w-full max-w-xs flex justify-center items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-primary-300 hover:bg-primary-300 transition ease-in-out duration-150 cursor-not-allowed",
+                  disabled: "",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                    className: "relative inline-flex justify-center items-center",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
+                      className: "animate-spin -ml-1 mr-3 h-5 w-5 text-white",
+                      xmlns: "http://www.w3.org/2000/svg",
+                      fill: "none",
+                      viewBox: "0 0 24 24",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("circle", {
+                        className: "opacity-25",
+                        cx: "12",
+                        cy: "12",
+                        r: "10",
+                        stroke: "currentColor",
+                        strokeWidth: "4"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
+                        className: "opacity-75",
+                        fill: "currentColor",
+                        d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      })]
+                    }), "Processing..."]
+                  })
+                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    ref: this.activateRef,
+                    type: "text",
+                    name: "activate",
+                    id: "activate",
+                    value: this.state.key,
+                    onChange: function onChange(e) {
+                      return _this2.setState({
+                        key: e.target.value
+                      });
+                    },
+                    className: " ".concat(this.state.notice ? "currentNotice" : "currentValidNotice", " block p-3 rounded-r-none border-gray-300/10 shadow-xl transition-all duration-200 sm:text-sm sm:leading-5 rounded-md "),
+                    placeholder: "Email or Licence Key"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                    onClick: function onClick(e) {
+                      return _this2.handleActivateLicence(e);
+                    },
+                    className: "p-2 bg-primary-400 rounded-r-md text-white",
+                    children: "Activate"
+                  })]
+                })
+              })]
+            })
+          })
+        }) :
+        /*#__PURE__*/
+        // start::main
+        (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "full flex relative my-1 justify-between",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+              onChange: function onChange(event) {
+                return _this2.handleChange("featch", event);
+              },
+              value: (_this$state = this.state) === null || _this$state === void 0 ? void 0 : _this$state.featch,
+              placeholder: "PlayStore App Url",
+              type: "text",
+              className: "awesomecoder_app_url block w-screen p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300/0 focus:ring focus:ring-primary-200/0 focus:ring-opacity-50"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
+              onClick: this.handleFeatchData,
+              className: "bg-primary-400 flex justify-around items-center w-1/5 cursor-pointer rounded-r-md",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+                className: "md:block hidden text-white font-semibold text-sm pointer-events-none ",
+                children: "Featch Data"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_6__["default"], {
+                className: (_this$state2 = this.state) !== null && _this$state2 !== void 0 && _this$state2.refresh ? "animate-spin pointer-events-none h-6 w-6 text-white font-semibold text-sm" : "pointer-events-none h-6 w-6 text-white font-semibold text-sm"
+              })]
             })]
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-          className: "grid lg:grid-cols-3 md:grid-cols-2 gird-cols-1",
-          children: [_Backend__WEBPACK_IMPORTED_MODULE_1__.metaFields.map(function (field, i) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gird-cols-1",
+            children: [_Backend__WEBPACK_IMPORTED_MODULE_1__.metaFields.map(function (field, i) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                className: "full relative my-1",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "relative rounded-md ",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+                    className: "mb-1 italic text-slate-800 text-xs font-light",
+                    children: field === null || field === void 0 ? void 0 : field.label
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    onChange: function onChange(event) {
+                      return _this2.handleChange(field === null || field === void 0 ? void 0 : field.name, event);
+                    },
+                    placeholder: field === null || field === void 0 ? void 0 : field.placeholder,
+                    value: _this2.state[field === null || field === void 0 ? void 0 : field.name],
+                    disabled: field === null || field === void 0 ? void 0 : field.disabled,
+                    type: field === null || field === void 0 ? void 0 : field.type,
+                    name: field === null || field === void 0 ? void 0 : field.name,
+                    className: "block p-3 lg:mx-0 md:mx-auto border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
+                  })]
+                })
+              }, field === null || field === void 0 ? void 0 : field.name);
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
               className: "full relative my-1",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
                 className: "relative rounded-md ",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
                   className: "mb-1 italic text-slate-800 text-xs font-light",
-                  children: field === null || field === void 0 ? void 0 : field.label
+                  children: "Updated"
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
-                  onChange: function onChange(event) {
-                    return _this2.handleChange(field === null || field === void 0 ? void 0 : field.name, event);
-                  },
-                  placeholder: field === null || field === void 0 ? void 0 : field.placeholder,
-                  value: _this2.state[field === null || field === void 0 ? void 0 : field.name],
-                  disabled: field === null || field === void 0 ? void 0 : field.disabled,
-                  type: field === null || field === void 0 ? void 0 : field.type,
-                  name: field === null || field === void 0 ? void 0 : field.name,
-                  className: "block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
+                  type: "text",
+                  disabled: true,
+                  value: _Backend__WEBPACK_IMPORTED_MODULE_1__.modified_date,
+                  className: "block p-3 lg:mx-0 md:mx-auto border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
                 })]
               })
-            }, field === null || field === void 0 ? void 0 : field.name);
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-            className: "full relative my-1",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-              className: "relative rounded-md ",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
-                className: "mb-1 italic text-slate-800 text-xs font-light",
-                children: "Updated"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
-                type: "text",
-                disabled: true,
-                value: _Backend__WEBPACK_IMPORTED_MODULE_1__.modified_date,
-                className: "block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
-              })]
-            })
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-          className: "relative w-full rounded-md border-slate-300/30 my-2 border flex p-3 justify-between items-center",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-            className: "text-xs font-semibold",
-            children: "Upload Apps"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-            className: " cursor-pointer ",
-            onClick: function onClick(e) {
-              return _this2.handleAddUpload(e);
-            },
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_6__["default"], {
-              strokeWidth: 1.5,
-              className: "w-6 h-6 pointer-events-none mr-2"
-            })
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-          className: "grid lg:grid-cols-3 md:grid-cols-2 gird-cols-1 my-4 gap-3 ",
-          children: [Object.keys(this.state.uploads).map(function (upload, i) {
-            var app = _this2.state.uploads[upload];
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-                className: "relative w-full rounded-md border border-slate-300/30 shadow-md p-4 space-y-3",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-                  className: "flex justify-between items-center",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-                    className: "text-sm text-slate-600 font-semibold truncate pr-2",
-                    children: app.file && app.file.slice(0, -4)
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-                    className: "cursor-pointer",
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "relative w-full rounded-md border-slate-300/30 my-2 border flex p-3 justify-between items-center",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+              className: "text-xs font-semibold",
+              children: "Upload Apps"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+              className: " cursor-pointer ",
+              onClick: function onClick(e) {
+                return _this2.handleAddUpload(e);
+              },
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_7__["default"], {
+                strokeWidth: 1.5,
+                className: "w-6 h-6 pointer-events-none mr-2"
+              })
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "grid lg:grid-cols-3 md:grid-cols-2 gird-cols-1 my-4 gap-3 ",
+            children: [Object.keys(this.state.uploads).map(function (upload, i) {
+              var app = _this2.state.uploads[upload];
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "relative w-full rounded-md border border-slate-300/30 shadow-md p-4 space-y-3",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                    className: "flex justify-between items-center",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+                      className: "text-sm text-slate-600 font-semibold truncate pr-2",
+                      children: app.file && app.file.slice(0, -4)
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+                      className: "cursor-pointer",
+                      onClick: function onClick(e) {
+                        return _this2.handleRemoveUpload(e, upload);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_8__["default"], {
+                        className: "pointer-events-none w-5 h-5 text-red-400"
+                      })
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                    className: "relative rounded-md cursor-pointer",
                     onClick: function onClick(e) {
-                      return _this2.handleRemoveUpload(e, upload);
+                      return _this2.handleUploadClick(e, upload);
                     },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_7__["default"], {
-                      className: "pointer-events-none w-5 h-5 text-red-400"
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_9__["default"], {
+                      className: "absolute pointer-events-none right-2 top-2 h-5 w-5"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                      type: "hidden",
+                      name: "awesomecoder_file_name[".concat(upload, "]"),
+                      value: app.file && (app === null || app === void 0 ? void 0 : app.file)
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                      type: "text",
+                      disabled: true,
+                      placeholder: "Choose File",
+                      value: app.file && (app === null || app === void 0 ? void 0 : app.file),
+                      style: {
+                        width: "100%"
+                      },
+                      onChange: function onChange(e) {
+                        return console.log(e);
+                      },
+                      className: "block pl-5 p-3 pointer-events-none border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                    className: "relative rounded-md ",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                      type: "hidden",
+                      name: "awesomecoder_file_size[".concat(upload, "]"),
+                      value: app === null || app === void 0 ? void 0 : app.size
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                      type: "text",
+                      placeholder: "Size",
+                      disabled: true,
+                      style: {
+                        width: "100%"
+                      },
+                      value: app === null || app === void 0 ? void 0 : app.size,
+                      onChange: function onChange(e) {
+                        return console.log(e);
+                      },
+                      className: "block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    className: "relative rounded-md ",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                      name: "awesomecoder_file_version[".concat(upload, "]"),
+                      type: "text",
+                      placeholder: "Version",
+                      value: app.version && (app === null || app === void 0 ? void 0 : app.version),
+                      style: {
+                        width: "100%"
+                      },
+                      onChange: function onChange(e) {
+                        return _this2.handleChangeVersion(e, upload);
+                      },
+                      className: "block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
                     })
                   })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-                  className: "relative rounded-md cursor-pointer",
-                  onClick: function onClick(e) {
-                    return _this2.handleUploadClick(e, upload);
-                  },
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_8__["default"], {
-                    className: "absolute pointer-events-none right-2 top-2 h-5 w-5"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
-                    type: "hidden",
-                    name: "awesomecoder_file_name[".concat(upload, "]"),
-                    value: app.file && (app === null || app === void 0 ? void 0 : app.file)
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
-                    type: "text",
-                    disabled: true,
-                    placeholder: "Choose File",
-                    value: app.file && (app === null || app === void 0 ? void 0 : app.file),
-                    style: {
-                      width: "100%"
-                    },
-                    onChange: function onChange(e) {
-                      return console.log(e);
-                    },
-                    className: "block pl-5 p-3 pointer-events-none border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-                  className: "relative rounded-md ",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
-                    type: "hidden",
-                    name: "awesomecoder_file_size[".concat(upload, "]"),
-                    value: app === null || app === void 0 ? void 0 : app.size
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
-                    type: "text",
-                    placeholder: "Size",
-                    disabled: true,
-                    style: {
-                      width: "100%"
-                    },
-                    value: app === null || app === void 0 ? void 0 : app.size,
-                    onChange: function onChange(e) {
-                      return console.log(e);
-                    },
-                    className: "block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-                  className: "relative rounded-md ",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
-                    name: "awesomecoder_file_version[".concat(upload, "]"),
-                    type: "text",
-                    placeholder: "Version",
-                    value: app.version && (app === null || app === void 0 ? void 0 : app.version),
-                    style: {
-                      width: "100%"
-                    },
-                    onChange: function onChange(e) {
-                      return _this2.handleChangeVersion(e, upload);
-                    },
-                    className: "block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
-                  })
-                })]
-              })
-            }, i);
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
-            type: "file",
-            className: "absolute left-0 -z-10 opacity-0 pointer-events-none",
-            onChange: function onChange(e) {
-              return _this2.handleUploadChange(e);
-            },
-            name: "apk",
-            ref: this.uploadFileRef
+                })
+              }, i);
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+              type: "file",
+              className: "absolute left-0 -z-10 opacity-0 pointer-events-none",
+              onChange: function onChange(e) {
+                return _this2.handleUploadChange(e);
+              },
+              name: "apk",
+              ref: this.uploadFileRef
+            })]
           })]
-        })]
+        }) // end::main
+
       });
     }
   }]);
@@ -57294,6 +57424,41 @@ function BackspaceIcon(props, svgRef) {
 }
 
 const ForwardRef = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(BackspaceIcon);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ForwardRef);
+
+/***/ }),
+
+/***/ "./node_modules/@heroicons/react/outline/esm/ExclamationCircleIcon.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@heroicons/react/outline/esm/ExclamationCircleIcon.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+function ExclamationCircleIcon(props, svgRef) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", Object.assign({
+    xmlns: "http://www.w3.org/2000/svg",
+    fill: "none",
+    viewBox: "0 0 24 24",
+    strokeWidth: 2,
+    stroke: "currentColor",
+    "aria-hidden": "true",
+    ref: svgRef
+  }, props), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    d: "M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+  }));
+}
+
+const ForwardRef = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(ExclamationCircleIcon);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ForwardRef);
 
 /***/ }),

@@ -36,11 +36,24 @@
 
    .awesomecoder input[type=number],
    .awesomecoder input[type=text]{
-        @apply outline-none px-3 py-1 rounded-md border-gray-300 lg:w-64 sm:w-72 w-72;
+        @apply outline-none px-3 py-1 rounded-md border-gray-300 lg:w-64 md:w-80 xs:w-full w-60;
     }
 
     .awesomecoder input[type=text].awesomecoder_app_url {
         @apply w-4/5 rounded-l-md rounded-r-none outline-none;
+    }
+
+    #activate{
+        @apply rounded-r-none h-9;
+        box-shadow: none !important;
+    }
+
+    #activate.currentNotice {
+        @apply border-red-600;
+    }
+
+    #activate.currentValidNotice {
+        @apply border-slate-600;
     }
 
     .awesomecoder input[type=text].awesomecoder_app_url:focus {
