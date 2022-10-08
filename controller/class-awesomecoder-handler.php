@@ -257,9 +257,21 @@ class Awesomecoder_Handler
 				// 	die;
 				// }
 
-				if (move_uploaded_file($_FILES['apk']['tmp_name'], $download__dir . $_FILES["apk"]['name'])) {
+				$name = $_FILES["apk"]['name'];
+				if (move_uploaded_file($_FILES['apk']['tmp_name'], $download__dir . $name)) {
+					$post_id = $_REQUEST["post_id"];
+					$version = $_REQUEST["var"];
+					$awesomecoder_app_upload = get_post_meta($post_id, "awesomecoder_app_upload", true);
+					$app_upload = is_array($awesomecoder_app_upload) ? $awesomecoder_app_upload : [];
+					$app_upload[] = [
+						"file" => $name,
+						"size" => $size,
+						"version" => $version,
+					];
+					update_post_meta($post_id, "awesomecoder_app_upload", $app_upload);
 					echo json_encode([
 						"success" => true,
+						"name" => $name,
 						"size" => $size,
 					]);
 				} else {

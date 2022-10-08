@@ -2546,7 +2546,7 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
  */
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"; // window.axios.defaults.headers.common["Content-type"] = "multipart/form-data";
 
 /***/ }),
 
@@ -2561,9 +2561,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ajaxurl": () => (/* binding */ ajaxurl),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "headers": () => (/* binding */ headers),
 /* harmony export */   "metaFields": () => (/* binding */ metaFields),
 /* harmony export */   "metabox": () => (/* binding */ metabox),
 /* harmony export */   "modified_date": () => (/* binding */ modified_date),
+/* harmony export */   "post_id": () => (/* binding */ post_id),
 /* harmony export */   "states": () => (/* binding */ states),
 /* harmony export */   "uploads": () => (/* binding */ uploads)
 /* harmony export */ });
@@ -2573,6 +2575,14 @@ var modified_date = awesomecoder.modified_date;
 var metaFields = metabox.fields;
 var states = metabox.states;
 var uploads = awesomecoder.uploads;
+var post_id = awesomecoder.post_id;
+var headers = {
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+    "Content-type": "multipart/form-data" // "Keep-Alive": "timeout=5, max=1000",
+
+  }
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   awesomecoder: awesomecoder,
   ajaxurl: ajaxurl,
@@ -2580,7 +2590,8 @@ var uploads = awesomecoder.uploads;
   metaFields: metaFields,
   modified_date: modified_date,
   states: states,
-  uploads: uploads
+  uploads: uploads,
+  headers: headers
 });
 
 /***/ }),
@@ -2603,7 +2614,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/FolderAddIcon.js");
 /* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/BackspaceIcon.js");
 /* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/FolderDownloadIcon.js");
-/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/SaveAsIcon.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
@@ -2701,6 +2711,15 @@ var Metabox = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleChangeVersion", function (e, upload) {
+      var newUploads = _this.state.uploads;
+      newUploads[upload].version = e.target.value;
+
+      _this.setState({
+        uploads: newUploads
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_this), "handleChange", function (name, event) {
       //more logic here as per the requirement
       _this.setState(_defineProperty({}, name, event.target.value));
@@ -2745,14 +2764,38 @@ var Metabox = /*#__PURE__*/function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "handleUpload", function (e, upload) {
-      console.log("aaaa");
-      console.log("upload", upload);
-      console.log("e", e);
+    _defineProperty(_assertThisInitialized(_this), "handleUploadClick", function (e, upload) {
+      _this.setState({
+        currentFile: upload
+      });
+
+      _this.uploadFileRef.current.click();
     });
 
-    _defineProperty(_assertThisInitialized(_this), "handleUploadNow", function (e) {
-      console.log("upload");
+    _defineProperty(_assertThisInitialized(_this), "handleUploadChange", function (e) {
+      var file = e.target.files[0];
+
+      if (file) {
+        // Create an object of formData
+        var formData = new FormData(); // Update the formData object
+
+        formData.append("apk", file, file.name);
+        var fileId = _this.state.currentFile;
+        var fileObj = _this.state.uploads[fileId];
+        axios__WEBPACK_IMPORTED_MODULE_2___default().post("".concat(_Backend__WEBPACK_IMPORTED_MODULE_1__.ajaxurl, "&awesomecoder_action=upload_apk&post_id=").concat(_Backend__WEBPACK_IMPORTED_MODULE_1__.post_id, "&var=").concat(fileObj.version), formData, _Backend__WEBPACK_IMPORTED_MODULE_1__.headers).then(function (res) {
+          var response = res.data;
+
+          if (response.success) {
+            var newUploads = _this.state.uploads;
+            newUploads[fileId].file = response.name;
+            newUploads[fileId].size = response.size;
+
+            _this.setState({
+              uploads: newUploads
+            });
+          }
+        });
+      }
     });
 
     _this.state = {
@@ -2769,8 +2812,10 @@ var Metabox = /*#__PURE__*/function (_Component) {
       awesomecoder_app_last_version: _Backend__WEBPACK_IMPORTED_MODULE_1__.states === null || _Backend__WEBPACK_IMPORTED_MODULE_1__.states === void 0 ? void 0 : _Backend__WEBPACK_IMPORTED_MODULE_1__.states.awesomecoder_app_last_version,
       awesomecoder_app_link: _Backend__WEBPACK_IMPORTED_MODULE_1__.states === null || _Backend__WEBPACK_IMPORTED_MODULE_1__.states === void 0 ? void 0 : _Backend__WEBPACK_IMPORTED_MODULE_1__.states.awesomecoder_app_link,
       awesomecoder_app_price: _Backend__WEBPACK_IMPORTED_MODULE_1__.states === null || _Backend__WEBPACK_IMPORTED_MODULE_1__.states === void 0 ? void 0 : _Backend__WEBPACK_IMPORTED_MODULE_1__.states.awesomecoder_app_price,
-      uploads: _Backend__WEBPACK_IMPORTED_MODULE_1__.uploads
+      uploads: _Backend__WEBPACK_IMPORTED_MODULE_1__.uploads,
+      currentFile: null
     };
+    _this.uploadFileRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createRef();
     _this.handleFeatchData = _this.handleFeatchData.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     return _this;
@@ -2844,7 +2889,8 @@ var Metabox = /*#__PURE__*/function (_Component) {
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "relative w-full rounded-md border-slate-300/30 my-2 border flex p-3 justify-between items-center",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "text-xs font-semibold",
             children: "Upload Apps"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
             className: " cursor-pointer ",
@@ -2853,14 +2899,13 @@ var Metabox = /*#__PURE__*/function (_Component) {
             },
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_6__["default"], {
               strokeWidth: 1.5,
-              className: "w-6 h-6 pointer-events-nonemr-2"
+              className: "w-6 h-6 pointer-events-none mr-2"
             })
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "grid lg:grid-cols-3 md:grid-cols-2 gird-cols-1 my-4 gap-3 ",
-          children: Object.keys(this.state.uploads).map(function (upload, i) {
+          children: [Object.keys(this.state.uploads).map(function (upload, i) {
             var app = _this2.state.uploads[upload];
-            console.log(app);
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
                 className: "relative w-full rounded-md border border-slate-300/30 shadow-md p-4 space-y-3",
@@ -2868,7 +2913,7 @@ var Metabox = /*#__PURE__*/function (_Component) {
                   className: "flex justify-between items-center",
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
                     className: "text-sm text-slate-600 font-semibold truncate pr-2",
-                    children: app.file.replace(/\.[^/.]+$/, "")
+                    children: app.file && app.file.slice(0, -4)
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
                     className: "cursor-pointer",
                     onClick: function onClick(e) {
@@ -2881,15 +2926,19 @@ var Metabox = /*#__PURE__*/function (_Component) {
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
                   className: "relative rounded-md cursor-pointer",
                   onClick: function onClick(e) {
-                    return _this2.handleUpload(e, upload);
+                    return _this2.handleUploadClick(e, upload);
                   },
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_8__["default"], {
                     className: "absolute pointer-events-none right-2 top-2 h-5 w-5"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "hidden",
+                    name: "awesomecoder_file_name[".concat(upload, "]"),
+                    value: app.file && (app === null || app === void 0 ? void 0 : app.file)
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
                     type: "text",
                     disabled: true,
                     placeholder: "Choose File",
-                    value: app.file && app.file,
+                    value: app.file && (app === null || app === void 0 ? void 0 : app.file),
                     style: {
                       width: "100%"
                     },
@@ -2898,35 +2947,52 @@ var Metabox = /*#__PURE__*/function (_Component) {
                     },
                     className: "block pl-5 p-3 pointer-events-none border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
                   })]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "relative rounded-md ",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "hidden",
+                    name: "awesomecoder_file_size[".concat(upload, "]"),
+                    value: app === null || app === void 0 ? void 0 : app.size
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "text",
+                    placeholder: "Size",
+                    disabled: true,
+                    style: {
+                      width: "100%"
+                    },
+                    value: app === null || app === void 0 ? void 0 : app.size,
+                    onChange: function onChange(e) {
+                      return console.log(e);
+                    },
+                    className: "block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
+                  })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                   className: "relative rounded-md ",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    name: "awesomecoder_file_version[".concat(upload, "]"),
                     type: "text",
                     placeholder: "Version",
-                    value: app.version && app.version,
+                    value: app.version && (app === null || app === void 0 ? void 0 : app.version),
                     style: {
                       width: "100%"
                     },
                     onChange: function onChange(e) {
-                      return console.log(e);
+                      return _this2.handleChangeVersion(e, upload);
                     },
                     className: "block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
                   })
                 })]
               })
             }, i);
-          })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-          className: "relative w-full flex justify-end items-center",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("span", {
-            onClick: function onClick(e) {
-              return _this2.handleUploadNow(e);
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            type: "file",
+            className: "absolute left-0 -z-10 opacity-0 pointer-events-none",
+            onChange: function onChange(e) {
+              return _this2.handleUploadChange(e);
             },
-            className: "cursor-pointer flex justify-center text-sm font-semibold items-center bg-primary-400 rounded-md text-white p-3 my-2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_9__["default"], {
-              className: " pointer-events-none mr-2 h-5 w-5"
-            }), "Save changes"]
-          })
+            name: "apk",
+            ref: this.uploadFileRef
+          })]
         })]
       });
     }
@@ -57297,41 +57363,6 @@ function RefreshIcon(props, svgRef) {
 }
 
 const ForwardRef = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(RefreshIcon);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ForwardRef);
-
-/***/ }),
-
-/***/ "./node_modules/@heroicons/react/outline/esm/SaveAsIcon.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/@heroicons/react/outline/esm/SaveAsIcon.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-
-function SaveAsIcon(props, svgRef) {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", Object.assign({
-    xmlns: "http://www.w3.org/2000/svg",
-    fill: "none",
-    viewBox: "0 0 24 24",
-    strokeWidth: 2,
-    stroke: "currentColor",
-    "aria-hidden": "true",
-    ref: svgRef
-  }, props), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    d: "M17 16v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2h2m3-4H9a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-1m-1 4l-3 3m0 0l-3-3m3 3V3"
-  }));
-}
-
-const ForwardRef = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(SaveAsIcon);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ForwardRef);
 
 /***/ })

@@ -67,6 +67,30 @@ class Awesomecoder_MetaBox
      */
     public function save_post_metadata($post_id, $post, $update)
     {
+
+        // echo '<pre>';
+        // print_r($_POST);
+        // echo '</pre>';
+        // die;
+
+        if (isset($_POST["awesomecoder_file_name"], $_POST["awesomecoder_file_size"], $_POST["awesomecoder_file_version"])) {
+            $app_upload = [];
+            $names = $_POST["awesomecoder_file_name"];
+            $sizes = $_POST["awesomecoder_file_size"];
+            $versions = $_POST["awesomecoder_file_version"];
+            $versions = array_unique($versions);
+
+            foreach ($versions as $key => $value) {
+                $app_upload[$key] = [
+                    "file" => $names[$key],
+                    "size" => $sizes[$key],
+                    "version" => $versions[$key],
+                ];
+            }
+            $app_upload = array_values($app_upload);
+            update_post_meta($post_id, "awesomecoder_app_upload", $app_upload);
+        }
+
         $fields = [
             // "awesomecoder_app_icon",
             "awesomecoder_app_downloads",
@@ -88,16 +112,6 @@ class Awesomecoder_MetaBox
             }
         }
 
-        if (isset($_POST["awesomecoder_app_upload"])) {
-            $awesomecoder_app_upload = get_post_meta($post_id, "awesomecoder_app_upload", true);
-            $app_upload = is_array($awesomecoder_app_upload) ? $awesomecoder_app_upload : [];
-            $post_app_uplaod = is_array($_POST["awesomecoder_app_upload"]) ?  $_POST["awesomecoder_app_upload"] : [];
-            foreach ($post_app_uplaod as $key => $post_app) {
-                $app_upload[$key] = $post_app;
-            }
-            update_post_meta($post_id, "awesomecoder_app_upload", $app_upload);
-        }
-
         if (isset($_POST["awesomecoder_app_size"])) {
             $awesomecoder_app_size = get_post_meta($post_id, "awesomecoder_app_sizes", true);
             $app_size = is_array($awesomecoder_app_size) ? $awesomecoder_app_size : [];
@@ -108,21 +122,6 @@ class Awesomecoder_MetaBox
             }
             update_post_meta($post_id, "awesomecoder_app_sizes", $app_size);
         }
-
-        // echo '<pre>';
-        // print_r(get_post_meta($post_id, "awesomecoder_app_upload", true));
-        // echo '</pre>';
-
-        // echo '<pre>';
-        // print_r(get_post_meta($post_id, "awesomecoder_app_upload", true));
-        // echo '</pre>';
-
-
-        // echo '<pre>';
-        // print_r($app_size);
-        // echo '</pre>';
-        // die;
-
 
         if (isset($_POST["awesomecoder_app_icon"])) {
             $icon = $_POST["awesomecoder_app_icon"] ?? "";

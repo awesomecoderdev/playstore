@@ -176,6 +176,26 @@ class Awesomecoder_Backend
 
 		wp_enqueue_script("{$this->plugin_name}", AWESOMECODER_PLAYSTORE_URL . 'backend/js/awesomecoder-init.js', array('jquery'), (filemtime(AWESOMECODER_PLAYSTORE_PATH . "backend/js/awesomecoder-init.js") ?? $this->version), false);
 		// Some local vairable to get ajax url
+		$awesomecoder_app_upload = get_post_meta(get_the_ID(), "awesomecoder_app_upload", true);
+		$app_upload = is_array($awesomecoder_app_upload) ? $awesomecoder_app_upload : [];
+		// $demo_upload =  [
+		// 	[
+		// 		"file" => "file.apk",
+		// 		"size" => "25mb",
+		// 		"version" => "0.0.0",
+		// 	],
+		// 	[
+		// 		"file" => "file1.apk",
+		// 		"size" => "25mb",
+		// 		"version" => "0.0.1",
+		// 	],
+		// 	[
+		// 		"file" => "fil2.apk",
+		// 		"size" => "25mb",
+		// 		"version" => "0.0.2",
+		// 	],
+		// ];
+		// update_post_meta(get_the_ID(), "awesomecoder_app_upload", []);
 		wp_localize_script($this->plugin_name, 'awesomecoder', array(
 			"plugin" => [
 				"name"		=> 	"PlayStore Data Scraper",
@@ -275,38 +295,8 @@ class Awesomecoder_Backend
 					"post_id" => get_the_ID(),
 				]
 			],
-			"uploads" => [
-				[
-					"version" => "0.0.0",
-					"file" => "file.apk",
-					"size" => "25mb"
-				],
-				[
-					"version" => "0.0.1",
-					"file" => "file1.apk",
-					"size" => "25mb"
-				],
-				[
-					"version" => "0.0.2",
-					"file" => "fil2.apk",
-					"size" => "25mb"
-				],
-				[
-					"version" => "0.0.0",
-					"file" => "file.apk",
-					"size" => "25mb"
-				],
-				[
-					"version" => "0.0.1",
-					"file" => "file1.apk",
-					"size" => "25mb"
-				],
-				[
-					"version" => "0.0.2",
-					"file" => "fil2.apk",
-					"size" => "25mb"
-				]
-			]
+			"uploads" => $app_upload,
+			"post_id" => get_the_ID()
 		));
 
 		// if (in_array($hook, $this->pages)) {

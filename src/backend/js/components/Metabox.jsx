@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import { ajaxurl, awesomecoder, metaFields,modified_date,states, uploads } from './Backend';
+import { ajaxurl, awesomecoder, headers, metaFields,modified_date,post_id,states, uploads } from './Backend';
 import { BackspaceIcon, FolderAddIcon, FolderDownloadIcon, FolderIcon, FolderOpenIcon, RefreshIcon, SaveAsIcon, SaveIcon } from '@heroicons/react/outline';
 import axios from 'axios';
-import { bind } from 'lodash';
+import { bind, isArray, isObject } from 'lodash';
 
 class Metabox extends Component {
 
@@ -24,7 +24,10 @@ class Metabox extends Component {
 			awesomecoder_app_link: states?.awesomecoder_app_link,
 			awesomecoder_app_price: states?.awesomecoder_app_price,
 			uploads: uploads,
+			currentFile: null,
         }
+
+        this.uploadFileRef = React.createRef();
 
         this.handleFeatchData = this.handleFeatchData.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -68,6 +71,14 @@ class Metabox extends Component {
         });
     }
 
+    handleChangeVersion = (e,upload) =>{
+        const newUploads = this.state.uploads;
+        newUploads[upload].version = e.target.value;
+        this.setState({
+            uploads: newUploads
+        })
+    }
+
     handleChange =(name,event) => {
         //more logic here as per the requirement
         this.setState({
@@ -109,14 +120,40 @@ class Metabox extends Component {
         })
     }
 
-    handleUpload = (e,upload) =>{
-        console.log("aaaa");
-        console.log("upload",upload);
-        console.log("e",e);
+    handleUploadClick = (e,upload) =>{
+        this.setState({
+            currentFile: upload
+        })
+        this.uploadFileRef.current.click();
     }
 
-    handleUploadNow  = (e) =>{
-        console.log("upload");
+    handleUploadChange = (e) =>{
+        const file = e.target.files[0];
+
+        if(file){
+            // Create an object of formData
+            const formData = new FormData();
+            // Update the formData object
+            formData.append(
+              "apk",
+              file,
+              file.name
+            );
+            const fileId = this.state.currentFile;
+            const fileObj = this.state.uploads[fileId];
+
+            axios.post(`${ajaxurl}&awesomecoder_action=upload_apk&post_id=${post_id}&var=${fileObj.version}`,formData,headers).then((res)=>{
+                const response = res.data;
+                if(response.success){
+                    const newUploads = this.state.uploads;
+                    newUploads[fileId].file = response.name;
+                    newUploads[fileId].size = response.size;
+                    this.setState({
+                        uploads: newUploads
+                    })
+                }
+            })
+        }
     }
 
     render() {
@@ -168,60 +205,66 @@ class Metabox extends Component {
                     </div>
                 </div>
                 <div className="relative w-full rounded-md border-slate-300/30 my-2 border flex p-3 justify-between items-center">
-                    <h1>Upload Apps</h1>
+                    <span className='text-xs font-semibold'>Upload Apps</span>
                     <span className=' cursor-pointer '
                         onClick={(e)=> this.handleAddUpload(e)}
                     >
-                        <FolderAddIcon strokeWidth={1.5} className='w-6 h-6 pointer-events-nonemr-2' />
+                        <FolderAddIcon strokeWidth={1.5} className='w-6 h-6 pointer-events-none mr-2' />
                     </span>
                 </div>
                 <div className="grid lg:grid-cols-3 md:grid-cols-2 gird-cols-1 my-4 gap-3 ">
                     {Object.keys(this.state.uploads).map((upload,i)=> {
                         const app = this.state.uploads[upload];
-                        console.log(app);
                         return(
                             <Fragment key={i}>
                                 <div className="relative w-full rounded-md border border-slate-300/30 shadow-md p-4 space-y-3">
                                     <div className="flex justify-between items-center">
-                                        <span className='text-sm text-slate-600 font-semibold truncate pr-2'>{app.file.replace(/\.[^/.]+$/, "")}</span>
+                                        {/* <span className='text-sm text-slate-600 font-semibold truncate pr-2'>{ app?.file.slice(0, -4) }</span> */}
+                                        <span className='text-sm text-slate-600 font-semibold truncate pr-2'>{ app.file && app.file.slice(0, -4) }</span>
                                         <span className='cursor-pointer' onClick={(e)=> this.handleRemoveUpload(e, upload)}>
                                             <BackspaceIcon className='pointer-events-none w-5 h-5 text-red-400' />
                                         </span>
                                     </div>
                                     <div className="relative rounded-md cursor-pointer"
-                                        onClick={(e)=> this.handleUpload(e,upload)}
+                                        onClick={(e)=> this.handleUploadClick(e,upload)}
                                     >
                                         <FolderDownloadIcon className="absolute pointer-events-none right-2 top-2 h-5 w-5" />
+                                        <input type="hidden" name={`awesomecoder_file_name[${upload}]`} value={app.file && app?.file} />
                                         <input
                                         type={"text"}
                                         disabled
                                         placeholder="Choose File"
-                                        value={app.file && app.file}
+                                        value={app.file && app?.file}
                                         style={{ width: "100%" }}
                                         onChange={(e)=> console.log(e)}
                                         className="block pl-5 p-3 pointer-events-none border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md " />
                                     </div>
                                     <div className="relative rounded-md ">
+                                        <input type="hidden" name={`awesomecoder_file_size[${upload}]`} value={app?.size} />
                                         <input
                                         type={"text"}
-                                        placeholder="Version"
-                                        value={app.version && app.version}
+                                        placeholder="Size"
+                                        disabled
                                         style={{ width: "100%" }}
+                                        value={app?.size}
                                         onChange={(e)=> console.log(e)}
+                                        className="block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md " />
+                                    </div>
+                                    <div className="relative rounded-md ">
+                                        <input
+                                        name={`awesomecoder_file_version[${upload}]`}
+                                        type={"text"}
+                                        placeholder="Version"
+                                        value={app.version && app?.version}
+                                        style={{ width: "100%" }}
+                                        onChange={(e)=> this.handleChangeVersion(e,upload)}
                                         className="block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md " />
                                     </div>
                                 </div>
                             </Fragment>
                         )
                     })}
-                </div>
-                <div className="relative w-full flex justify-end items-center">
-                    <span
-                        onClick={(e)=> this.handleUploadNow(e)}
-                        className='cursor-pointer flex justify-center text-sm font-semibold items-center bg-primary-400 rounded-md text-white p-3 my-2'>
-                        <SaveAsIcon className=' pointer-events-none mr-2 h-5 w-5' />
-                        Save changes
-                    </span>
+                    <input type="file" className='absolute left-0 -z-10 opacity-0 pointer-events-none' onChange={(e)=> this.handleUploadChange(e)} name="apk" ref={this.uploadFileRef} />
                 </div>
             </>
         );
