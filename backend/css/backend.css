@@ -830,6 +830,9 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .items-center{
   align-items: center;
 }
+.justify-end{
+  justify-content: flex-end;
+}
 .justify-center{
   justify-content: center;
 }

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { ajaxurl, awesomecoder, metaFields,modified_date,states, uploads } from './Backend';
-import { BackspaceIcon, FolderAddIcon, FolderDownloadIcon, FolderIcon, FolderOpenIcon, RefreshIcon } from '@heroicons/react/outline';
+import { BackspaceIcon, FolderAddIcon, FolderDownloadIcon, FolderIcon, FolderOpenIcon, RefreshIcon, SaveAsIcon, SaveIcon } from '@heroicons/react/outline';
 import axios from 'axios';
 import { bind } from 'lodash';
 
@@ -115,6 +115,10 @@ class Metabox extends Component {
         console.log("e",e);
     }
 
+    handleUploadNow  = (e) =>{
+        console.log("upload");
+    }
+
     render() {
         return (
             <>
@@ -210,6 +214,14 @@ class Metabox extends Component {
                             </Fragment>
                         )
                     })}
+                </div>
+                <div className="relative w-full flex justify-end items-center">
+                    <span
+                        onClick={(e)=> this.handleUploadNow(e)}
+                        className='cursor-pointer flex justify-center text-sm font-semibold items-center bg-primary-400 rounded-md text-white p-3 my-2'>
+                        <SaveAsIcon className=' pointer-events-none mr-2 h-5 w-5' />
+                        Save changes
+                    </span>
                 </div>
             </>
         );
