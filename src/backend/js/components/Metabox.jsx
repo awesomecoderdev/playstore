@@ -75,6 +75,33 @@ class Metabox extends Component {
         });
     };
 
+    handleAddUpload = (e) =>{
+        const newUploads = this.state.uploads;
+        newUploads.push({
+            version: "",
+            file: "",
+            size: ""
+        })
+        this.setState( prevState => ({
+            uploads: newUploads
+        }))
+
+        // this.setState( prevState => ({
+        //     uploads: {
+        //         ...prevState.uploads,        // copy all other key-value pairs of food object
+        //         [1]:{
+        //             version: "0.sdfsdf.0",
+        //             file: "sdfsdf.apk",
+        //             size: "sdf"
+        //         }
+        //         // pizza: {                     // specific object of food object
+        //         //     ...prevState.food.pizza,   // copy all pizza key-value pairs
+        //         //     extraCheese: true          // update value of specific key
+        //         //   }
+        //     }
+        // }))
+    }
+
     handleRemoveUpload = (e,upload) =>{
         const newUploads = this.state.uploads.filter((item,i) => i != upload);
         this.setState({
@@ -138,7 +165,11 @@ class Metabox extends Component {
                 </div>
                 <div className="relative w-full rounded-md border-slate-300/30 my-2 border flex p-3 justify-between items-center">
                     <h1>Upload Apps</h1>
-                    <FolderAddIcon strokeWidth={1.5} className='w-6 h-6 cursor-pointer mr-2' />
+                    <span className=' cursor-pointer '
+                        onClick={(e)=> this.handleAddUpload(e)}
+                    >
+                        <FolderAddIcon strokeWidth={1.5} className='w-6 h-6 pointer-events-nonemr-2' />
+                    </span>
                 </div>
                 <div className="grid lg:grid-cols-3 md:grid-cols-2 gird-cols-1 my-4 gap-3 ">
                     {Object.keys(this.state.uploads).map((upload,i)=> {
@@ -160,7 +191,7 @@ class Metabox extends Component {
                                         <input
                                         type={"text"}
                                         disabled
-                                        placeholder="File"
+                                        placeholder="Choose File"
                                         value={app.file && app.file}
                                         style={{ width: "100%" }}
                                         onChange={(e)=> console.log(e)}

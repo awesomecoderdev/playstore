@@ -2702,6 +2702,35 @@ var Metabox = /*#__PURE__*/function (_Component) {
       _this.setState(_defineProperty({}, name, event.target.value));
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleAddUpload", function (e) {
+      var newUploads = _this.state.uploads;
+      newUploads.push({
+        version: "",
+        file: "",
+        size: ""
+      });
+
+      _this.setState(function (prevState) {
+        return {
+          uploads: newUploads
+        };
+      }); // this.setState( prevState => ({
+      //     uploads: {
+      //         ...prevState.uploads,        // copy all other key-value pairs of food object
+      //         [1]:{
+      //             version: "0.sdfsdf.0",
+      //             file: "sdfsdf.apk",
+      //             size: "sdf"
+      //         }
+      //         // pizza: {                     // specific object of food object
+      //         //     ...prevState.food.pizza,   // copy all pizza key-value pairs
+      //         //     extraCheese: true          // update value of specific key
+      //         //   }
+      //     }
+      // }))
+
+    });
+
     _defineProperty(_assertThisInitialized(_this), "handleRemoveUpload", function (e, upload) {
       var newUploads = _this.state.uploads.filter(function (item, i) {
         return i != upload;
@@ -2809,9 +2838,15 @@ var Metabox = /*#__PURE__*/function (_Component) {
           className: "relative w-full rounded-md border-slate-300/30 my-2 border flex p-3 justify-between items-center",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
             children: "Upload Apps"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_6__["default"], {
-            strokeWidth: 1.5,
-            className: "w-6 h-6 cursor-pointer mr-2"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: " cursor-pointer ",
+            onClick: function onClick(e) {
+              return _this2.handleAddUpload(e);
+            },
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_6__["default"], {
+              strokeWidth: 1.5,
+              className: "w-6 h-6 pointer-events-nonemr-2"
+            })
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           className: "grid lg:grid-cols-3 md:grid-cols-2 gird-cols-1 my-4 gap-3 ",
@@ -2845,7 +2880,7 @@ var Metabox = /*#__PURE__*/function (_Component) {
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
                     type: "text",
                     disabled: true,
-                    placeholder: "File",
+                    placeholder: "Choose File",
                     value: app.file && app.file,
                     style: {
                       width: "100%"
