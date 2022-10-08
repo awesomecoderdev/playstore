@@ -2702,6 +2702,22 @@ var Metabox = /*#__PURE__*/function (_Component) {
       _this.setState(_defineProperty({}, name, event.target.value));
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleRemoveUpload", function (e, upload) {
+      var newUploads = _this.state.uploads.filter(function (item, i) {
+        return i != upload;
+      });
+
+      _this.setState({
+        uploads: newUploads
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "handleUpload", function (e, upload) {
+      console.log("aaaa");
+      console.log("upload", upload);
+      console.log("e", e);
+    });
+
     _this.state = {
       refresh: false,
       featch: "",
@@ -2812,6 +2828,9 @@ var Metabox = /*#__PURE__*/function (_Component) {
                     children: app.file.replace(/\.[^/.]+$/, "")
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
                     className: "cursor-pointer",
+                    onClick: function onClick(e) {
+                      return _this2.handleRemoveUpload(e, upload);
+                    },
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_7__["default"], {
                       className: "pointer-events-none w-5 h-5 text-red-400"
                     })
@@ -2819,7 +2838,7 @@ var Metabox = /*#__PURE__*/function (_Component) {
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
                   className: "relative rounded-md cursor-pointer",
                   onClick: function onClick(e) {
-                    return console.log("this is a", e);
+                    return _this2.handleUpload(e, upload);
                   },
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_8__["default"], {
                     className: "absolute pointer-events-none right-2 top-2 h-5 w-5"

@@ -75,6 +75,19 @@ class Metabox extends Component {
         });
     };
 
+    handleRemoveUpload = (e,upload) =>{
+        const newUploads = this.state.uploads.filter((item,i) => i != upload);
+        this.setState({
+            uploads: newUploads,
+        })
+    }
+
+    handleUpload = (e,upload) =>{
+        console.log("aaaa");
+        console.log("upload",upload);
+        console.log("e",e);
+    }
+
     render() {
         return (
             <>
@@ -136,12 +149,12 @@ class Metabox extends Component {
                                 <div className="relative w-full rounded-md border border-slate-300/30 shadow-md p-4 space-y-3">
                                     <div className="flex justify-between items-center">
                                         <span className='text-sm text-slate-600 font-semibold truncate pr-2'>{app.file.replace(/\.[^/.]+$/, "")}</span>
-                                        <span className='cursor-pointer'>
+                                        <span className='cursor-pointer' onClick={(e)=> this.handleRemoveUpload(e, upload)}>
                                             <BackspaceIcon className='pointer-events-none w-5 h-5 text-red-400' />
                                         </span>
                                     </div>
                                     <div className="relative rounded-md cursor-pointer"
-                                        onClick={(e)=> console.log("this is a",e)}
+                                        onClick={(e)=> this.handleUpload(e,upload)}
                                     >
                                         <FolderDownloadIcon className="absolute pointer-events-none right-2 top-2 h-5 w-5" />
                                         <input
