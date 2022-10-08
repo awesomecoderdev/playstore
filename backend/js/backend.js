@@ -2561,23 +2561,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "metaFields": () => (/* binding */ metaFields),
 /* harmony export */   "metabox": () => (/* binding */ metabox),
 /* harmony export */   "modified_date": () => (/* binding */ modified_date),
-/* harmony export */   "states": () => (/* binding */ states)
+/* harmony export */   "states": () => (/* binding */ states),
+/* harmony export */   "uploads": () => (/* binding */ uploads)
 /* harmony export */ });
 var ajaxurl = awesomecoder.ajaxurl;
 var metabox = awesomecoder.metabox;
 var modified_date = awesomecoder.modified_date;
 var metaFields = metabox.fields;
 var states = metabox.states;
-console.log('====================================');
-console.log(modified_date);
-console.log('====================================');
+var uploads = awesomecoder.uploads;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   awesomecoder: awesomecoder,
   ajaxurl: ajaxurl,
   metabox: metabox,
   metaFields: metaFields,
   modified_date: modified_date,
-  states: states
+  states: states,
+  uploads: uploads
 });
 
 /***/ }),
@@ -2597,6 +2597,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Backend__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Backend */ "./src/backend/js/components/Backend.jsx");
 /* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/RefreshIcon.js");
+/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/FolderAddIcon.js");
+/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/BackspaceIcon.js");
+/* harmony import */ var _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @heroicons/react/outline */ "./node_modules/@heroicons/react/outline/esm/FolderDownloadIcon.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
@@ -2712,7 +2715,8 @@ var Metabox = /*#__PURE__*/function (_Component) {
       awesomecoder_app_size: _Backend__WEBPACK_IMPORTED_MODULE_1__.states === null || _Backend__WEBPACK_IMPORTED_MODULE_1__.states === void 0 ? void 0 : _Backend__WEBPACK_IMPORTED_MODULE_1__.states.awesomecoder_app_size,
       awesomecoder_app_last_version: _Backend__WEBPACK_IMPORTED_MODULE_1__.states === null || _Backend__WEBPACK_IMPORTED_MODULE_1__.states === void 0 ? void 0 : _Backend__WEBPACK_IMPORTED_MODULE_1__.states.awesomecoder_app_last_version,
       awesomecoder_app_link: _Backend__WEBPACK_IMPORTED_MODULE_1__.states === null || _Backend__WEBPACK_IMPORTED_MODULE_1__.states === void 0 ? void 0 : _Backend__WEBPACK_IMPORTED_MODULE_1__.states.awesomecoder_app_link,
-      awesomecoder_app_price: _Backend__WEBPACK_IMPORTED_MODULE_1__.states === null || _Backend__WEBPACK_IMPORTED_MODULE_1__.states === void 0 ? void 0 : _Backend__WEBPACK_IMPORTED_MODULE_1__.states.awesomecoder_app_price
+      awesomecoder_app_price: _Backend__WEBPACK_IMPORTED_MODULE_1__.states === null || _Backend__WEBPACK_IMPORTED_MODULE_1__.states === void 0 ? void 0 : _Backend__WEBPACK_IMPORTED_MODULE_1__.states.awesomecoder_app_price,
+      uploads: _Backend__WEBPACK_IMPORTED_MODULE_1__.uploads
     };
     _this.handleFeatchData = _this.handleFeatchData.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
@@ -2748,7 +2752,7 @@ var Metabox = /*#__PURE__*/function (_Component) {
             })]
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-          className: "grid lg:grid-cols-3 md:grid-cols-2 ",
+          className: "grid lg:grid-cols-3 md:grid-cols-2 gird-cols-1",
           children: [_Backend__WEBPACK_IMPORTED_MODULE_1__.metaFields.map(function (field, i) {
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
               className: "full relative my-1",
@@ -2785,6 +2789,71 @@ var Metabox = /*#__PURE__*/function (_Component) {
               })]
             })
           })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "relative w-full rounded-md border-slate-300/30 my-2 border flex p-3 justify-between items-center",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
+            children: "Upload Apps"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_6__["default"], {
+            strokeWidth: 1.5,
+            className: "w-6 h-6 cursor-pointer mr-2"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          className: "grid lg:grid-cols-3 md:grid-cols-2 gird-cols-1 my-4 gap-3 ",
+          children: Object.keys(this.state.uploads).map(function (upload, i) {
+            var app = _this2.state.uploads[upload];
+            console.log(app);
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                className: "relative w-full rounded-md border border-slate-300/30 shadow-md p-4 space-y-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "flex justify-between items-center",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+                    className: "text-sm text-slate-600 font-semibold truncate pr-2",
+                    children: app.file.replace(/\.[^/.]+$/, "")
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+                    className: "cursor-pointer",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_7__["default"], {
+                      className: "pointer-events-none w-5 h-5 text-red-400"
+                    })
+                  })]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                  className: "relative rounded-md cursor-pointer",
+                  onClick: function onClick(e) {
+                    return console.log("this is a", e);
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_8__["default"], {
+                    className: "absolute pointer-events-none right-2 top-2 h-5 w-5"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "text",
+                    disabled: true,
+                    placeholder: "File",
+                    value: app.file && app.file,
+                    style: {
+                      width: "100%"
+                    },
+                    onChange: function onChange(e) {
+                      return console.log(e);
+                    },
+                    className: "block pl-5 p-3 pointer-events-none border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
+                  })]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                  className: "relative rounded-md ",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "text",
+                    placeholder: "Version",
+                    value: app.version && app.version,
+                    style: {
+                      width: "100%"
+                    },
+                    onChange: function onChange(e) {
+                      return console.log(e);
+                    },
+                    className: "block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
+                  })
+                })]
+              })
+            }, i);
+          })
         })]
       });
     }
@@ -57055,6 +57124,111 @@ if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/scheduler.development.js */ "./node_modules/scheduler/cjs/scheduler.development.js");
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/@heroicons/react/outline/esm/BackspaceIcon.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@heroicons/react/outline/esm/BackspaceIcon.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+function BackspaceIcon(props, svgRef) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", Object.assign({
+    xmlns: "http://www.w3.org/2000/svg",
+    fill: "none",
+    viewBox: "0 0 24 24",
+    strokeWidth: 2,
+    stroke: "currentColor",
+    "aria-hidden": "true",
+    ref: svgRef
+  }, props), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    d: "M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z"
+  }));
+}
+
+const ForwardRef = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(BackspaceIcon);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ForwardRef);
+
+/***/ }),
+
+/***/ "./node_modules/@heroicons/react/outline/esm/FolderAddIcon.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@heroicons/react/outline/esm/FolderAddIcon.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+function FolderAddIcon(props, svgRef) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", Object.assign({
+    xmlns: "http://www.w3.org/2000/svg",
+    fill: "none",
+    viewBox: "0 0 24 24",
+    strokeWidth: 2,
+    stroke: "currentColor",
+    "aria-hidden": "true",
+    ref: svgRef
+  }, props), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    d: "M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+  }));
+}
+
+const ForwardRef = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(FolderAddIcon);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ForwardRef);
+
+/***/ }),
+
+/***/ "./node_modules/@heroicons/react/outline/esm/FolderDownloadIcon.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@heroicons/react/outline/esm/FolderDownloadIcon.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+function FolderDownloadIcon(props, svgRef) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", Object.assign({
+    xmlns: "http://www.w3.org/2000/svg",
+    fill: "none",
+    viewBox: "0 0 24 24",
+    strokeWidth: 2,
+    stroke: "currentColor",
+    "aria-hidden": "true",
+    ref: svgRef
+  }, props), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    d: "M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+  }));
+}
+
+const ForwardRef = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(FolderDownloadIcon);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ForwardRef);
 
 /***/ }),
 

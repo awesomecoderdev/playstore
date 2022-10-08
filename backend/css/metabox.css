@@ -680,6 +680,12 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .top-1{
   top: 0.25rem;
 }
+.right-2{
+  right: 0.5rem;
+}
+.top-2{
+  top: 0.5rem;
+}
 .z-10{
   z-index: 10;
 }
@@ -701,6 +707,14 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .mx-2{
   margin-left: 0.5rem;
   margin-right: 0.5rem;
+}
+.my-2{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.my-4{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .ml-2{
   margin-left: 0.5rem;
@@ -848,6 +862,11 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
   margin-right: calc(0.25rem * var(--tw-space-x-reverse));
   margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
+.space-y-3 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
 .divide-none > :not([hidden]) ~ :not([hidden]){
   border-style: none;
 }
@@ -890,11 +909,17 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .rounded-tl-\[65px\]{
   border-top-left-radius: 65px;
 }
+.border{
+  border-width: 1px;
+}
 .border-none{
   border-style: none;
 }
 .border-gray-300\/10{
   border-color: rgb(209 213 219 / 0.1);
+}
+.border-slate-300\/30{
+  border-color: rgb(203 213 225 / 0.3);
 }
 .bg-white{
   --tw-bg-opacity: 1;
@@ -969,6 +994,9 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .pr-2{
   padding-right: 0.5rem;
 }
+.pl-5{
+  padding-left: 1.25rem;
+}
 .text-left{
   text-align: left;
 }
@@ -1031,6 +1059,10 @@ input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, inp
 .text-slate-800{
   --tw-text-opacity: 1;
   color: rgb(30 41 59 / var(--tw-text-opacity));
+}
+.text-red-400{
+  --tw-text-opacity: 1;
+  color: rgb(248 113 113 / var(--tw-text-opacity));
 }
 .opacity-50{
   opacity: 0.5;

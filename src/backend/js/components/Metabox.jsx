@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { ajaxurl, awesomecoder, metaFields,modified_date,states } from './Backend';
-import { RefreshIcon } from '@heroicons/react/outline';
+import React, { Component, Fragment } from 'react';
+import { ajaxurl, awesomecoder, metaFields,modified_date,states, uploads } from './Backend';
+import { BackspaceIcon, FolderAddIcon, FolderDownloadIcon, FolderIcon, FolderOpenIcon, RefreshIcon } from '@heroicons/react/outline';
 import axios from 'axios';
 import { bind } from 'lodash';
 
@@ -23,6 +23,7 @@ class Metabox extends Component {
 			awesomecoder_app_last_version: states?.awesomecoder_app_last_version,
 			awesomecoder_app_link: states?.awesomecoder_app_link,
 			awesomecoder_app_price: states?.awesomecoder_app_price,
+			uploads: uploads,
         }
 
         this.handleFeatchData = this.handleFeatchData.bind(this);
@@ -90,7 +91,7 @@ class Metabox extends Component {
                         <RefreshIcon className={ this.state?.refresh ? "animate-spin pointer-events-none h-6 w-6 text-white font-semibold text-sm" : "pointer-events-none h-6 w-6 text-white font-semibold text-sm" } />
                     </span>
                 </div>
-                <div className="grid lg:grid-cols-3 md:grid-cols-2 ">
+                <div className="grid lg:grid-cols-3 md:grid-cols-2 gird-cols-1">
                     {metaFields.map((field, i) => {
                         return(
                             <div key={field?.name} className="full relative my-1">
@@ -121,6 +122,50 @@ class Metabox extends Component {
                             className="block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md " />
                         </div>
                     </div>
+                </div>
+                <div className="relative w-full rounded-md border-slate-300/30 my-2 border flex p-3 justify-between items-center">
+                    <h1>Upload Apps</h1>
+                    <FolderAddIcon strokeWidth={1.5} className='w-6 h-6 cursor-pointer mr-2' />
+                </div>
+                <div className="grid lg:grid-cols-3 md:grid-cols-2 gird-cols-1 my-4 gap-3 ">
+                    {Object.keys(this.state.uploads).map((upload,i)=> {
+                        const app = this.state.uploads[upload];
+                        console.log(app);
+                        return(
+                            <Fragment key={i}>
+                                <div className="relative w-full rounded-md border border-slate-300/30 shadow-md p-4 space-y-3">
+                                    <div className="flex justify-between items-center">
+                                        <span className='text-sm text-slate-600 font-semibold truncate pr-2'>{app.file.replace(/\.[^/.]+$/, "")}</span>
+                                        <span className='cursor-pointer'>
+                                            <BackspaceIcon className='pointer-events-none w-5 h-5 text-red-400' />
+                                        </span>
+                                    </div>
+                                    <div className="relative rounded-md cursor-pointer"
+                                        onClick={(e)=> console.log("this is a",e)}
+                                    >
+                                        <FolderDownloadIcon className="absolute pointer-events-none right-2 top-2 h-5 w-5" />
+                                        <input
+                                        type={"text"}
+                                        disabled
+                                        placeholder="File"
+                                        value={app.file && app.file}
+                                        style={{ width: "100%" }}
+                                        onChange={(e)=> console.log(e)}
+                                        className="block pl-5 p-3 pointer-events-none border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md " />
+                                    </div>
+                                    <div className="relative rounded-md ">
+                                        <input
+                                        type={"text"}
+                                        placeholder="Version"
+                                        value={app.version && app.version}
+                                        style={{ width: "100%" }}
+                                        onChange={(e)=> console.log(e)}
+                                        className="block p-3 border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md " />
+                                    </div>
+                                </div>
+                            </Fragment>
+                        )
+                    })}
                 </div>
             </>
         );

@@ -275,6 +275,23 @@ class Awesomecoder_Backend
 					"post_id" => get_the_ID(),
 				]
 			],
+			"uploads" => [
+				[
+					"version" => "0.0.0",
+					"file" => "file.apk",
+					"size" => "25mb"
+				],
+				[
+					"version" => "0.0.1",
+					"file" => "file1.apk",
+					"size" => "25mb"
+				],
+				[
+					"version" => "0.0.2",
+					"file" => "fil2.apk",
+					"size" => "25mb"
+				]
+			]
 		));
 
 		// if (in_array($hook, $this->pages)) {

@@ -3,10 +3,8 @@ export const metabox = awesomecoder.metabox;
 export const modified_date = awesomecoder.modified_date;
 export const metaFields = metabox.fields;
 export const states = metabox.states;
+export const uploads = awesomecoder.uploads;
 
-console.log('====================================');
-console.log(modified_date);
-console.log('====================================');
 
 export default {
     awesomecoder,
@@ -14,5 +12,6 @@ export default {
     metabox,
     metaFields,
     modified_date,
-    states
+    states,
+    uploads,
 }
