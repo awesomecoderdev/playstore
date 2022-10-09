@@ -232,7 +232,6 @@ class Metabox extends Component {
                                                 Processing...
                                             </div>
                                         </button>
-
                                         :
                                         <Fragment>
                                             <input
