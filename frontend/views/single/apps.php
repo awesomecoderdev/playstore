@@ -147,7 +147,7 @@ $awesomecoder_app_sizes = get_post_meta(get_the_ID(), "awesomecoder_app_sizes", 
                             <span class="ml-2 text-sm font-semibold">Price</span>
                         </th>
                         <td class=" md:px-6 md:py-4 px-3 py-2 border-none divide-none">
-                            <h1 class="text-sm font-semibold"><?php echo $awesomecoder_app_price ?? "Free"; ?></h1>
+                            <h1 class="text-sm font-semibold"><?php echo $awesomecoder_app_price ? $awesomecoder_app_price : "Free"; ?></h1>
                         </td>
                     </tr>
                     <tr class=" dark:bg-gray-800 even:bg-white odd:bg-gray-50 even:dark:bg-gray-800 odd:dark:bg-gray-700">
@@ -219,7 +219,7 @@ $awesomecoder_app_sizes = get_post_meta(get_the_ID(), "awesomecoder_app_sizes", 
                             <span class="ml-2 text-sm font-semibold">Size</span>
                         </th>
                         <td class=" md:px-6 md:py-4 px-3 py-2 border-none divide-none">
-                            <h1 class="text-sm font-semibold"><?php echo $awesomecoder_app_size; ?></h1>
+                            <h1 class="text-sm font-semibold"><?php echo $awesomecoder_app_sizes; ?></h1>
                         </td>
                     </tr>
 

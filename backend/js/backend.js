@@ -2990,9 +2990,10 @@ var Metabox = /*#__PURE__*/function (_Component) {
                     },
                     placeholder: field === null || field === void 0 ? void 0 : field.placeholder,
                     value: _this2.state[field === null || field === void 0 ? void 0 : field.name],
+                    disabled: field === null || field === void 0 ? void 0 : field.disabled,
                     type: field === null || field === void 0 ? void 0 : field.type,
                     name: field === null || field === void 0 ? void 0 : field.name,
-                    className: " ".concat((field === null || field === void 0 ? void 0 : field.disabled) && "opacity-70 pointer-events-none", " block p-3 lg:mx-0 md:mx-auto border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md ")
+                    className: "block p-3 lg:mx-0 md:mx-auto border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md "
                   })]
                 })
               }, field === null || field === void 0 ? void 0 : field.name);
