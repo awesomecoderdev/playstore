@@ -95,6 +95,12 @@ class Awesomecoder_MetaBox
             }
             $app_upload = array_values($app_upload);
             update_post_meta($post_id, "awesomecoder_app_upload", $app_upload);
+
+            $last_app = end($app_upload);
+            $last_app_size = $last_app["size"] ? $last_app["size"] : "";
+            $last_app_version = $last_app["version"] ? $last_app["version"] : "";
+            update_post_meta($post_id, "awesomecoder_app_sizes", $last_app_size);
+            update_post_meta($post_id, "awesomecoder_app_last_version", $last_app_version);
         }
 
         $fields = [
@@ -106,7 +112,6 @@ class Awesomecoder_MetaBox
             "awesomecoder_app_devLink",
             "awesomecoder_app_compatible_with",
             "awesomecoder_app_size",
-            "awesomecoder_app_last_version",
             "awesomecoder_app_link",
             "awesomecoder_app_price",
         ];
@@ -116,17 +121,6 @@ class Awesomecoder_MetaBox
                 $value = $_POST[$option] ?? "";
                 update_post_meta($post_id, $option, $value);
             }
-        }
-
-        if (isset($_POST["awesomecoder_app_size"])) {
-            $awesomecoder_app_size = get_post_meta($post_id, "awesomecoder_app_sizes", true);
-            $app_size = is_array($awesomecoder_app_size) ? $awesomecoder_app_size : [];
-            $post_app_size = $_POST["awesomecoder_app_size"] ?  $_POST["awesomecoder_app_size"] : null;
-            if (isset($_POST["awesomecoder_app_last_version"]) && $post_app_size != null) {
-                $app_ver = $_POST["awesomecoder_app_last_version"];
-                $app_size[$app_ver] = $post_app_size;
-            }
-            update_post_meta($post_id, "awesomecoder_app_sizes", $app_size);
         }
 
         if (isset($_POST["awesomecoder_app_icon"])) {

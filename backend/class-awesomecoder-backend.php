@@ -257,6 +257,7 @@ class Awesomecoder_Backend
 						"placeholder" => __("Last Version", "awesomecoder"),
 						"name" => "awesomecoder_app_last_version",
 						"type" => "text",
+						"disabled" => true,
 					],
 					[
 						"label" => __("Last Version Size", "awesomecoder"),
@@ -287,7 +288,7 @@ class Awesomecoder_Backend
 					"awesomecoder_app_devName" => get_post_meta(get_the_ID(), "awesomecoder_app_devName", true),
 					"awesomecoder_app_devLink" => get_post_meta(get_the_ID(), "awesomecoder_app_devLink", true),
 					"awesomecoder_app_compatible_with" => get_post_meta(get_the_ID(), "awesomecoder_app_compatible_with", true),
-					"awesomecoder_app_size" => get_post_meta(get_the_ID(), "awesomecoder_app_size", true),
+					"awesomecoder_app_size" => get_post_meta(get_the_ID(), "awesomecoder_app_sizes", true),
 					"awesomecoder_app_last_version" => get_post_meta(get_the_ID(), "awesomecoder_app_last_version", true),
 					"awesomecoder_app_link" => get_post_meta(get_the_ID(), "awesomecoder_app_link", true),
 					"awesomecoder_app_price" => get_post_meta(get_the_ID(), "awesomecoder_app_price", true),

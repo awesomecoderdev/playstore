@@ -280,10 +280,9 @@ class Metabox extends Component {
                                             <input onChange={event => this.handleChange( field?.name, event)}
                                             placeholder={field?.placeholder}
                                             value={this.state[field?.name]}
-                                            disabled={field?.disabled}
                                             type={ field?.type}
                                             name={field?.name}
-                                            className="block p-3 lg:mx-0 md:mx-auto border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md " />
+                                            className={` ${field?.disabled && "opacity-70 pointer-events-none"} block p-3 lg:mx-0 md:mx-auto border-gray-300/10 shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md `} />
                                         </div>
                                     </div>
                                 )
