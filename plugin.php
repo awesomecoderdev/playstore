@@ -17,6 +17,7 @@ use AwesomeCoder\Plugin\Playstore\Controller\Awesomecoder_Shortcode;
  *
  * @package    Awesomecoder
  * @subpackage Awesomecoder/controller
+ * 
  */
 
 // If this file is called directly, abort.
